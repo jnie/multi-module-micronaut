@@ -133,4 +133,4 @@ See [LICENSE](LICENSE) for details.
 
 ---
 
-*This project demonstrates that clean architecture is about **module design**, not framework choice. The same multi-module structure that works with Spring Boot works just as well with Micronaut.*
+*This project demonstrates that clean architecture is about **module design**, not framework choice. The same multi-module structure that works with Spring Boot works just as well with Micronaut.*# Build debug
