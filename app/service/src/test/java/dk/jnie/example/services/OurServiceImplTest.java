@@ -10,8 +10,9 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import reactor.core.publisher.Mono;
-import reactor.test.StepVerifier;
+
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.verify;
@@ -37,7 +38,7 @@ class OurServiceImplTest {
 
     @Test
     @DisplayName("getAnAdvice returns advice successfully")
-    void getAnAdvice_ReturnsAdviceSuccessfully() {
+    void getAnAdvice_ReturnsAdviceSuccessfully() throws ExecutionException, InterruptedException {
         // Arrange
         String expectedAdvice = "Don't be afraid to ask questions.";
         DomainRequest request = DomainRequest.builder()
@@ -47,22 +48,19 @@ class OurServiceImplTest {
                 .answer(expectedAdvice)
                 .build();
 
-        when(adviceAPI.getRandomAdvice()).thenReturn(Mono.just(mockAggregate));
+        when(adviceAPI.getRandomAdvice()).thenReturn(CompletableFuture.completedFuture(mockAggregate));
 
         // Act
-        Mono<DomainResponse> result = ourService.getAnAdvice(request);
+        CompletableFuture<DomainResponse> result = ourService.getAnAdvice(request);
 
         // Assert
-        StepVerifier.create(result)
-                .assertNext(response -> assertThat(response.getAnswer()).isEqualTo(expectedAdvice))
-                .verifyComplete();
-
+        assertThat(result.get().getAnswer()).isEqualTo(expectedAdvice);
         verify(adviceAPI).getRandomAdvice();
     }
 
     @Test
     @DisplayName("getAnAdvice handles empty advice response")
-    void getAnAdvice_HandlesEmptyAdviceResponse() {
+    void getAnAdvice_HandlesEmptyAdviceResponse() throws ExecutionException, InterruptedException {
         // Arrange
         DomainRequest request = DomainRequest.builder()
                 .question("test")
@@ -71,15 +69,13 @@ class OurServiceImplTest {
                 .answer("")
                 .build();
 
-        when(adviceAPI.getRandomAdvice()).thenReturn(Mono.just(mockAggregate));
+        when(adviceAPI.getRandomAdvice()).thenReturn(CompletableFuture.completedFuture(mockAggregate));
 
         // Act
-        Mono<DomainResponse> result = ourService.getAnAdvice(request);
+        CompletableFuture<DomainResponse> result = ourService.getAnAdvice(request);
 
         // Assert
-        StepVerifier.create(result)
-                .assertNext(response -> assertThat(response.getAnswer()).isEmpty())
-                .verifyComplete();
+        assertThat(result.get().getAnswer()).isEmpty();
     }
 
     @Test
@@ -91,22 +87,20 @@ class OurServiceImplTest {
                 .build();
         RuntimeException expectedError = new RuntimeException("External API failed");
 
-        when(adviceAPI.getRandomAdvice()).thenReturn(Mono.error(expectedError));
+        when(adviceAPI.getRandomAdvice()).thenReturn(CompletableFuture.failedFuture(expectedError));
 
-        // Act
-        Mono<DomainResponse> result = ourService.getAnAdvice(request);
-
-        // Assert
-        StepVerifier.create(result)
-                .expectError(RuntimeException.class)
-                .verify();
-
-        verify(adviceAPI).getRandomAdvice();
+        // Act & Assert
+        try {
+            ourService.getAnAdvice(request).get();
+            throw new AssertionError("Expected ExecutionException");
+        } catch (ExecutionException e) {
+            assertThat(e.getCause()).isInstanceOf(RuntimeException.class);
+        }
     }
 
     @Test
     @DisplayName("getAnAdvice does not use domain request parameters")
-    void getAnAdvice_DoesNotUseDomainRequestParameters() {
+    void getAnAdvice_DoesNotUseDomainRequestParameters() throws ExecutionException, InterruptedException {
         // Arrange
         DomainRequest request = DomainRequest.builder()
                 .question("this parameter is not used")
@@ -115,17 +109,12 @@ class OurServiceImplTest {
                 .answer("API provides random advice")
                 .build();
 
-        when(adviceAPI.getRandomAdvice()).thenReturn(Mono.just(mockAggregate));
+        when(adviceAPI.getRandomAdvice()).thenReturn(CompletableFuture.completedFuture(mockAggregate));
 
         // Act
-        Mono<DomainResponse> result = ourService.getAnAdvice(request);
+        CompletableFuture<DomainResponse> result = ourService.getAnAdvice(request);
 
         // Assert
-        StepVerifier.create(result)
-                .assertNext(response -> {
-                    assertThat(response.getAnswer()).isNotEqualTo("this parameter is not used");
-                    assertThat(response.getAnswer()).isEqualTo("API provides random advice");
-                })
-                .verifyComplete();
+        assertThat(result.get().getAnswer()).isEqualTo("API provides random advice");
     }
 }
