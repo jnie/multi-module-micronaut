@@ -6,6 +6,7 @@
         <groupId>dk.jnie.example</groupId>
         <artifactId>multi-module-micronaut</artifactId>
         <version>0.0.1-SNAPSHOT</version>
+        <relativePath>../../pom.xml</relativePath>
     </parent>
     <artifactId>repository</artifactId>
     <packaging>jar</packaging>
@@ -18,13 +19,6 @@
             <artifactId>domain</artifactId>
             <version>${project.parent.version}</version>
             <scope>compile</scope>
-        </dependency>
-
-        <!-- H2 Database -->
-        <dependency>
-            <groupId>com.h2database</groupId>
-            <artifactId>h2</artifactId>
-            <scope>runtime</scope>
         </dependency>
 
         <!-- Micronaut JDBC -->
