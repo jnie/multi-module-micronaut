@@ -28,7 +28,7 @@ jobs:
         distribution: 'temurin'
         cache: maven
     - name: Build with Maven
-      run: mvn -B verify -DskipTests -e --file pom.xml
+      run: mvn -B clean install -DskipTests -e --file pom.xml
 
     # Upload test reports
     - name: Upload test results
