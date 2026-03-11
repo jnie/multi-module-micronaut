@@ -49,6 +49,13 @@
             <artifactId>mapstruct</artifactId>
         </dependency>
 
+        <!-- MapStruct Processor (needed at compile time) -->
+        <dependency>
+            <groupId>org.mapstruct</groupId>
+            <artifactId>mapstruct-processor</artifactId>
+            <scope>provided</scope>
+        </dependency>
+
         <!-- CDI API for MapStruct with componentModel="cdi" -->
         <dependency>
             <groupId>jakarta.enterprise</groupId>
