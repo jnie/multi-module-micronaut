@@ -27,8 +27,13 @@ replay_pid*
 .*
 !.gitignore
 !.gitattributes
+!.github
+!.mvn
+!.idea
 **/target/*
 **/target/
+**/.settings/*
+**/.settings/
 **/.classpath
 **/.factorypath
 **/.project
