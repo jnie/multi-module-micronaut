@@ -1,0 +1,15 @@
+micronaut:
+  server:
+    port: -1
+  application:
+    name: multi-module-micronaut
+
+mma:
+  outbound:
+    advice-slip-api:
+      url: "http://localhost:8765"
+
+logger:
+  levels:
+    dk.jnie.example: DEBUG
+    dk.jnie.example.advice: DEBUG

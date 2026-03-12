@@ -1,6 +1,5 @@
 package dk.jnie.example.advice.model;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import io.micronaut.serde.annotation.Serdeable;
 
 /**
@@ -16,7 +15,6 @@ import io.micronaut.serde.annotation.Serdeable;
 @Serdeable
 public class AdviceResponse {
 
-    @JsonProperty("slip")
     private Slip slip;
 
     public Slip getSlip() {
@@ -30,10 +28,8 @@ public class AdviceResponse {
     @Serdeable
     public static class Slip {
         
-        @JsonProperty("id")
         private Integer id;
         
-        @JsonProperty("advice")
         private String advice;
 
         public Integer getId() {

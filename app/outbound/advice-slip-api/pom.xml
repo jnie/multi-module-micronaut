@@ -40,6 +40,11 @@
             <artifactId>micronaut-serde-jackson</artifactId>
         </dependency>
 
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+        </dependency>
+
         <!-- MapStruct Core Dependency -->
         <dependency>
             <groupId>org.mapstruct</groupId>
