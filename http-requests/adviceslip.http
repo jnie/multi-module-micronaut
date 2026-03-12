@@ -1,0 +1,4 @@
+### GET request to example server
+POST http://{host}/api/v1/advice
+{ "please": "test" }
+###

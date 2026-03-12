@@ -1,20 +1,17 @@
 package dk.jnie.example.advice;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import dk.jnie.example.advice.mappers.AdviceObjectMapper;
 import dk.jnie.example.advice.model.AdviceResponse;
 import dk.jnie.example.domain.model.MultiAggregate;
 import dk.jnie.example.domain.outbound.AdviceApi;
-import io.micronaut.context.annotation.Value;
+import io.micronaut.http.HttpRequest;
+import io.micronaut.http.client.HttpClient;
+import io.micronaut.http.client.annotation.Client;
 import jakarta.inject.Inject;
 import jakarta.inject.Singleton;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.net.URI;
-import java.net.http.HttpClient;
-import java.net.http.HttpRequest;
-import java.net.http.HttpResponse;
 import java.util.concurrent.CompletableFuture;
 
 @Singleton
@@ -22,16 +19,14 @@ public class AdviceApiImpl implements AdviceApi {
 
     private static final Logger LOG = LoggerFactory.getLogger(AdviceApiImpl.class);
 
-    private final ObjectMapper objectMapper;
+    private final HttpClient httpClient;
     private final AdviceObjectMapper mapper;
-    private final String apiUrl;
 
     @Inject
-    public AdviceApiImpl(ObjectMapper objectMapper, AdviceObjectMapper mapper,
-                         @Value("${mma.outbound.advice-slip-api.url}") String apiUrl) {
-        this.objectMapper = objectMapper;
+    public AdviceApiImpl(@Client("${mma.outbound.advice-slip-api.url}") HttpClient httpClient,
+                         AdviceObjectMapper mapper) {
+        this.httpClient = httpClient;
         this.mapper = mapper;
-        this.apiUrl = apiUrl;
     }
 
     @Override
@@ -40,16 +35,8 @@ public class AdviceApiImpl implements AdviceApi {
 
         return CompletableFuture.supplyAsync(() -> {
             try {
-                HttpClient client = HttpClient.newHttpClient();
-                HttpRequest request = HttpRequest.newBuilder()
-                        .uri(URI.create(apiUrl + "/advice"))
-                        .GET()
-                        .build();
-
-                HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
-                String responseBody = response.body();
-
-                AdviceResponse adviceResponse = objectMapper.readValue(responseBody, AdviceResponse.class);
+                AdviceResponse adviceResponse = httpClient.toBlocking()
+                        .retrieve(HttpRequest.GET("/advice"), AdviceResponse.class);
 
                 return mapper.toDomain(adviceResponse);
 
