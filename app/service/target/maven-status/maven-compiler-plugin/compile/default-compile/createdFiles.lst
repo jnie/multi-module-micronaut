@@ -1,0 +1,3 @@
+dk/jnie/example/services/$OurServiceImpl$Definition.class
+dk/jnie/example/services/OurServiceImpl.class
+META-INF/micronaut/io.micronaut.inject.BeanDefinitionReference/dk.jnie.example.services.$OurServiceImpl$Definition

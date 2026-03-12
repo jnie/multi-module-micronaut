@@ -1,0 +1,13 @@
+dk/jnie/example/repository/$RepositoryConfig$Definition.class
+META-INF/micronaut/io.micronaut.inject.BeanDefinitionReference/dk.jnie.example.repository.$CacheService$Definition
+dk/jnie/example/repository/$CacheService$Definition.class
+META-INF/micronaut/io.micronaut.inject.BeanDefinitionReference/dk.jnie.example.repository.$RepositoryConfig$Definition
+dk/jnie/example/repository/CacheRepository.class
+dk/jnie/example/repository/CacheRepositoryImpl.class
+dk/jnie/example/repository/CacheRepository$CacheEntry.class
+dk/jnie/example/repository/CacheService.class
+dk/jnie/example/repository/CacheEntity$CacheEntityBuilder.class
+dk/jnie/example/repository/CacheEntity.class
+dk/jnie/example/repository/RepositoryConfig.class
+META-INF/micronaut/io.micronaut.inject.BeanDefinitionReference/dk.jnie.example.repository.$RepositoryConfig$DataSource0$Definition
+dk/jnie/example/repository/$RepositoryConfig$DataSource0$Definition.class
