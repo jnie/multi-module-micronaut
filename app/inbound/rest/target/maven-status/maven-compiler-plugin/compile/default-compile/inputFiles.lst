@@ -1,5 +1,0 @@
-/home/j9elsen/projects/github/multi-module-micronaut/app/inbound/rest/src/main/java/dk/jnie/example/rest/controllers/MainController.java
-/home/j9elsen/projects/github/multi-module-micronaut/app/inbound/rest/src/main/java/dk/jnie/example/rest/exception/GlobalExceptionHandler.java
-/home/j9elsen/projects/github/multi-module-micronaut/app/inbound/rest/src/main/java/dk/jnie/example/rest/mappers/RestMapper.java
-/home/j9elsen/projects/github/multi-module-micronaut/app/inbound/rest/src/main/java/dk/jnie/example/rest/model/RequestDto.java
-/home/j9elsen/projects/github/multi-module-micronaut/app/inbound/rest/src/main/java/dk/jnie/example/rest/model/ResponseDto.java
