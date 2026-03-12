@@ -49,6 +49,12 @@
             <artifactId>micronaut-runtime</artifactId>
         </dependency>
 
+        <!-- OpenAPI / Swagger -->
+        <dependency>
+            <groupId>io.micronaut.openapi</groupId>
+            <artifactId>micronaut-openapi</artifactId>
+        </dependency>
+
         <!-- Test dependencies -->
         <dependency>
             <groupId>io.micronaut.test</groupId>
@@ -72,16 +78,8 @@
             <plugin>
                 <groupId>io.micronaut.maven</groupId>
                 <artifactId>micronaut-maven-plugin</artifactId>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-jar-plugin</artifactId>
                 <configuration>
-                    <archive>
-                        <manifest>
-                            <mainClass>dk.jnie.example.Application</mainClass>
-                        </manifest>
-                    </archive>
+                    <mainClass>dk.jnie.example.Application</mainClass>
                 </configuration>
             </plugin>
         </plugins>

@@ -1,8 +1,23 @@
-spring:
-  application:
-    name: multi-module-architecture
-# application properties
 mma:
   outbound:
     advice-slip-api:
       url: "https://api.adviceslip.com"
+
+micronaut:
+  application:
+    name: multi-module-micronaut
+  server:
+    port: 8080
+
+# OpenAPI / Swagger configuration
+openapi:
+  title: Multi-Module Micronaut API
+  description: API for the multi-module architecture proof-of-concept
+  version: 0.0.1
+  server:
+    url: http://localhost:8080
+
+endpoints:
+  health:
+    enabled: true
+    sensitive: false
