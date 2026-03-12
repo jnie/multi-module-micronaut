@@ -50,6 +50,13 @@
             <artifactId>swagger-annotations</artifactId>
         </dependency>
 
+        <!-- Swagger UI -->
+        <dependency>
+            <groupId>org.webjars</groupId>
+            <artifactId>swagger-ui</artifactId>
+            <version>5.20.7</version>
+        </dependency>
+
         <!-- MapStruct Core Dependency -->
         <dependency>
             <groupId>org.mapstruct</groupId>

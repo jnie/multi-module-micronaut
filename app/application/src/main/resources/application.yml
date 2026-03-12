@@ -8,6 +8,14 @@ micronaut:
     name: multi-module-micronaut
   server:
     port: 8080
+  router:
+    static-resources:
+      swagger:
+        paths: classpath:META-INF/swagger
+        mapping: /swagger/**
+      swagger-ui:
+        paths: classpath:META-INF/swagger/views/swagger-ui
+        mapping: /swagger-ui/**
 
 # OpenAPI / Swagger configuration
 openapi:
@@ -16,6 +24,9 @@ openapi:
   version: 0.0.1
   server:
     url: http://localhost:8080
+  swagger-ui:
+    enabled: true
+    path: /swagger-ui
 
 endpoints:
   health:
