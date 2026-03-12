@@ -23,7 +23,7 @@ public class RepositoryConfig {
      *
      * @return Configured H2 DataSource
      */
-    @Bean(preDestroy = "close")
+    @Bean
     public DataSource dataSource() {
         HikariConfig config = new HikariConfig();
         config.setJdbcUrl("jdbc:h2:mem:testdb;DB_CLOSE_DELAY=-1;MODE=MySQL");

@@ -5,6 +5,7 @@ import dk.jnie.example.advice.mappers.AdviceObjectMapper;
 import dk.jnie.example.advice.model.AdviceResponse;
 import dk.jnie.example.domain.model.MultiAggregate;
 import dk.jnie.example.domain.outbound.AdviceApi;
+import io.micronaut.context.annotation.Value;
 import jakarta.inject.Inject;
 import jakarta.inject.Singleton;
 import org.slf4j.Logger;
@@ -27,7 +28,7 @@ public class AdviceApiImpl implements AdviceApi {
 
     @Inject
     public AdviceApiImpl(ObjectMapper objectMapper, AdviceObjectMapper mapper,
-                         io.micronaut.context.annotation.Value("${mma.outbound.advice-slip-api.url}") String apiUrl) {
+                         @Value("${mma.outbound.advice-slip-api.url}") String apiUrl) {
         this.objectMapper = objectMapper;
         this.mapper = mapper;
         this.apiUrl = apiUrl;
@@ -50,8 +51,7 @@ public class AdviceApiImpl implements AdviceApi {
 
                 AdviceResponse adviceResponse = objectMapper.readValue(responseBody, AdviceResponse.class);
 
-                return mapper.toDomain(adviceResponse).orElseThrow(() -> 
-                    new RuntimeException("Failed to map advice response"));
+                return mapper.toDomain(adviceResponse);
 
             } catch (Exception e) {
                 LOG.error("Failed to call advice API", e);

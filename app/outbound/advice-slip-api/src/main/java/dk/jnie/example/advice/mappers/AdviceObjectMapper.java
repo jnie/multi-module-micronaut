@@ -11,5 +11,5 @@ import java.util.Optional;
 public interface AdviceObjectMapper {
 
     @Mapping(target="answer", source="slip.advice")
-    Optional<MultiAggregate> toDomain(AdviceResponse response);
+    MultiAggregate toDomain(AdviceResponse response);
 }

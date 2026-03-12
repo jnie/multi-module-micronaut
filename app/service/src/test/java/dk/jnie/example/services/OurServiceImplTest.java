@@ -93,7 +93,7 @@ class OurServiceImplTest {
         try {
             ourService.getAnAdvice(request).get();
             throw new AssertionError("Expected ExecutionException");
-        } catch (ExecutionException e) {
+        } catch (ExecutionException | InterruptedException e) {
             assertThat(e.getCause()).isInstanceOf(RuntimeException.class);
         }
     }

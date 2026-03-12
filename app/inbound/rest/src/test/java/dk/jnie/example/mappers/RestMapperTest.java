@@ -15,14 +15,12 @@ import static org.assertj.core.api.Assertions.assertThat;
 class RestMapperTest {
 
     @Test
-    @DisplayName("RestMapper should be properly annotated")
-    void restMapper_ShouldBeProperlyAnnotated() throws Exception {
-        // Verify that RestMapper interface exists and has MapStruct annotation
+    @DisplayName("RestMapper should exist and be an interface")
+    void restMapper_ShouldExistAndBeInterface() throws Exception {
         Class<?> mapperClass = Class.forName("dk.jnie.example.rest.mappers.RestMapper");
-        
         assertThat(mapperClass.isInterface()).isTrue();
         
-        // Verify MapStruct annotation exists
-        assertThat(mapperClass.getAnnotation(org.mapstruct.Mapper.class)).isNotNull();
+        Class<?> mapperImplClass = Class.forName("dk.jnie.example.rest.mappers.RestMapperImpl");
+        assertThat(mapperImplClass).isNotNull();
     }
 }
