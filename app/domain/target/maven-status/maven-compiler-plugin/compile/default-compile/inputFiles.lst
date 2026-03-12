@@ -1,0 +1,6 @@
+/home/j9elsen/projects/github/multi-module-micronaut/app/domain/src/main/java/dk/jnie/example/domain/model/DomainRequestDef.java
+/home/j9elsen/projects/github/multi-module-micronaut/app/domain/src/main/java/dk/jnie/example/domain/model/DomainResponseDef.java
+/home/j9elsen/projects/github/multi-module-micronaut/app/domain/src/main/java/dk/jnie/example/domain/model/MultiAggregateDef.java
+/home/j9elsen/projects/github/multi-module-micronaut/app/domain/src/main/java/dk/jnie/example/domain/outbound/AdviceApi.java
+/home/j9elsen/projects/github/multi-module-micronaut/app/domain/src/main/java/dk/jnie/example/domain/services/OurService.java
+/home/j9elsen/projects/github/multi-module-micronaut/app/domain/src/main/java/dk/jnie/example/domain/util/ObjectStyle.java
