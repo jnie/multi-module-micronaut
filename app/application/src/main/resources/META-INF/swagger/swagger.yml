@@ -1,0 +1,35 @@
+openapi: 3.0.1
+tags:
+- name: Main API
+  description: "Call for an advice, this could f.ex be a random advice"
+paths:
+  /api/v1/advice:
+    post:
+      tags:
+      - Main API
+      summary: Ask for an advice
+      description: "Usage, use POST verb and the request model to ask for an advice"
+      operationId: getAdvice
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/RequestDto"
+            examples:
+              example:
+                value:
+                  please: anything
+        required: true
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/RequestDto"
+        "400":
+          description: Invalid input
+components:
+  schemas:
+    RequestDto:
+      type: object
