@@ -21,20 +21,27 @@ app/
 ├── inbound/rest/          # REST controllers, DTOs, mappers
 ├── application/           # Main class, configuration, beans
 ├── domain/                # Domain models, interfaces (business logic contracts)
-├── service/               # Business logic implementation
+├── service/               # Business logic implementation and Orchestration layer
 └── outbound/              # External adapters (HTTP clients, repositories)
     └── advice-slip-api/   # Integration with Advice Slip API
 ```
 
 ### Module Responsibilities
 
-| Module | Description |
-|--------|-------------|
-| **inbound/rest** | REST controllers, DTOs, exception handling |
-| **application** | Entry point (Application.main), configuration, dependency wiring |
-| **domain** | Business models, interfaces (contracts), no framework dependencies |
-| **service** | Orchestration of business logic, implements domain services |
-| **outbound/advice-slip-api** | External API integration (HTTP client) |
+| Module | Description                                                                     |
+|--------|---------------------------------------------------------------------------------|
+| **inbound/rest** | REST controllers, DTOs, exception handling                                      |
+| **application** | Entry point (Application.main), configuration, dependency wiring                |
+| **domain** | Business models, interfaces (contracts) for services, no framework dependencies |
+| **service** | Orchestration and business logic, implements domain services                    |
+| **outbound/advice-slip-api** | External API integration (HTTP client)                                          |
+
+## Constraints for module dependencies
+- inbound/rest cannot depend on any other module than Domain
+- application depends on all modules to wire the full application
+- domain cannot depend on any other module
+- service cannot depend on any other module than Domain
+- outboudn/*api* cannot depend on any other module than Domain
 
 ## 🚀 Getting Started
 
