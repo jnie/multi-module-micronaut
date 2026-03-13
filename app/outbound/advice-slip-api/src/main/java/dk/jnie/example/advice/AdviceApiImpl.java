@@ -40,8 +40,10 @@ public class AdviceApiImpl implements AdviceApi {
 
         return CompletableFuture.supplyAsync(() -> {
             try {
-                AdviceResponse adviceResponse = httpClient.toBlocking()
-                        .retrieve(HttpRequest.GET("/advice"), AdviceResponse.class);
+                String rawResponse = httpClient.toBlocking()
+                        .retrieve(HttpRequest.GET("/advice"), String.class);
+
+                AdviceResponse adviceResponse = objectMapper.readValue(rawResponse, AdviceResponse.class);
 
                 return mapper.toDomain(adviceResponse);
 
