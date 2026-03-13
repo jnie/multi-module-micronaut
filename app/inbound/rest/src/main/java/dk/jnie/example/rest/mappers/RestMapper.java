@@ -7,7 +7,7 @@ import dk.jnie.example.rest.model.ResponseDto;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
-@Mapper(componentModel = "cdi")
+@Mapper(componentModel = "jakarta")
 public interface RestMapper {
 
     @Mapping(source = "answer", target = "advice")

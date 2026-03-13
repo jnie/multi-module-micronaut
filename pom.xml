@@ -53,12 +53,12 @@
             <dependency>
                 <groupId>org.mapstruct</groupId>
                 <artifactId>mapstruct</artifactId>
-                <version>1.6.3</version>
+                <version>1.7.0.Beta1</version>
             </dependency>
             <dependency>
                 <groupId>org.mapstruct</groupId>
                 <artifactId>mapstruct-processor</artifactId>
-                <version>1.6.3</version>
+                <version>1.7.0.Beta1</version>
                 <scope>provided</scope>
             </dependency>
         </dependencies>
@@ -208,6 +208,11 @@
                         <path>
                             <groupId>org.mapstruct</groupId>
                             <artifactId>mapstruct-processor</artifactId>
+                        </path>
+                        <path>
+                            <groupId>jakarta.inject</groupId>
+                            <artifactId>jakarta.inject-api</artifactId>
+                            <version>2.0.1</version>
                         </path>
                         <path>
                             <groupId>org.immutables</groupId>
