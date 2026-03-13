@@ -22,4 +22,13 @@ public interface AdviceApi {
      *         object containing the advice data, or complete exceptionally if the fetch fails.
      */
     CompletableFuture<MultiAggregate> getRandomAdvice();
+
+    /**
+     * Casts cached data to MultiAggregate.
+     * Used when retrieving cached data that needs to be cast back to the domain model.
+     *
+     * @param data the cached data (may be MultiAggregate or serialized String)
+     * @return a CompletableFuture containing the MultiAggregate
+     */
+    CompletableFuture<MultiAggregate> castToMultiAggregate(Object data);
 }

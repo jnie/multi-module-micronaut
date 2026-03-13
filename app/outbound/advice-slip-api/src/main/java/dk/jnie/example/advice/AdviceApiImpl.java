@@ -1,5 +1,7 @@
 package dk.jnie.example.advice;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import dk.jnie.example.advice.mappers.AdviceObjectMapper;
 import dk.jnie.example.advice.model.AdviceResponse;
 import dk.jnie.example.domain.model.MultiAggregate;
@@ -21,12 +23,15 @@ public class AdviceApiImpl implements AdviceApi {
 
     private final HttpClient httpClient;
     private final AdviceObjectMapper mapper;
+    private final ObjectMapper objectMapper;
 
     @Inject
     public AdviceApiImpl(@Client("${mma.outbound.advice-slip-api.url}") HttpClient httpClient,
-                         AdviceObjectMapper mapper) {
+                         AdviceObjectMapper mapper,
+                         ObjectMapper objectMapper) {
         this.httpClient = httpClient;
         this.mapper = mapper;
+        this.objectMapper = objectMapper;
     }
 
     @Override
@@ -44,6 +49,24 @@ public class AdviceApiImpl implements AdviceApi {
                 LOG.error("Failed to call advice API", e);
                 throw new RuntimeException("Failed to call advice API", e);
             }
+        });
+    }
+
+    @Override
+    public CompletableFuture<MultiAggregate> castToMultiAggregate(Object data) {
+        return CompletableFuture.supplyAsync(() -> {
+            if (data instanceof MultiAggregate multiAggregate) {
+                return multiAggregate;
+            }
+            if (data instanceof String json) {
+                try {
+                    return objectMapper.readValue(json, MultiAggregate.class);
+                } catch (JsonProcessingException e) {
+                    LOG.error("Failed to deserialize cached data", e);
+                    throw new RuntimeException("Failed to deserialize cached data", e);
+                }
+            }
+            throw new IllegalArgumentException("Unknown cached data type: " + data.getClass());
         });
     }
 }

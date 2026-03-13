@@ -21,13 +21,7 @@
             <scope>compile</scope>
         </dependency>
 
-        <!-- Micronaut JDBC -->
-        <dependency>
-            <groupId>io.micronaut.sql</groupId>
-            <artifactId>micronaut-jdbc-hikari</artifactId>
-        </dependency>
-
-        <!-- Micronaut Transaction -->
+        <!-- Micronaut Runtime -->
         <dependency>
             <groupId>io.micronaut</groupId>
             <artifactId>micronaut-runtime</artifactId>
