@@ -7,7 +7,7 @@ import org.mapstruct.Mapping;
 
 import java.util.Optional;
 
-@Mapper(componentModel = "cdi")
+@Mapper(componentModel = "jakarta")
 public interface AdviceObjectMapper {
 
     @Mapping(target="answer", source="slip.advice")
