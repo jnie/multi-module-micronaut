@@ -21,19 +21,7 @@
             <scope>compile</scope>
         </dependency>
 
-        <!-- Micronaut R2DBC -->
-        <dependency>
-            <groupId>io.micronaut.r2dbc</groupId>
-            <artifactId>micronaut-r2dbc-core</artifactId>
-        </dependency>
-
-        <!-- R2DBC H2 -->
-        <dependency>
-            <groupId>io.r2dbc</groupId>
-            <artifactId>r2dbc-h2</artifactId>
-        </dependency>
-
-        <!-- Micronaut Transaction -->
+        <!-- Micronaut Runtime -->
         <dependency>
             <groupId>io.micronaut</groupId>
             <artifactId>micronaut-runtime</artifactId>
