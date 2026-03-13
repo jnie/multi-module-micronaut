@@ -1,6 +1,5 @@
 package dk.jnie.example.services;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import dk.jnie.example.domain.model.DomainRequest;
 import dk.jnie.example.domain.model.DomainResponse;
 import dk.jnie.example.domain.model.MultiAggregate;
@@ -18,14 +17,11 @@ import java.util.concurrent.ExecutionException;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-/**
- * Unit tests for OurServiceImpl.
- * Tests the business logic layer that orchestrates calls to the AdviceApi.
- */
 @ExtendWith(MockitoExtension.class)
 @org.mockito.junit.jupiter.MockitoSettings(strictness = org.mockito.quality.Strictness.LENIENT)
 @DisplayName("OurServiceImpl Tests")
@@ -37,23 +33,20 @@ class OurServiceImplTest {
     @Mock
     private CacheRepository cacheRepository;
 
-    private ObjectMapper objectMapper;
     private OurServiceImpl ourService;
 
     @BeforeEach
     void setUp() {
-        objectMapper = new ObjectMapper();
-        ourService = new OurServiceImpl(adviceAPI, cacheRepository, objectMapper);
+        ourService = new OurServiceImpl(adviceAPI, cacheRepository);
         
         when(cacheRepository.retrieve(anyString())).thenReturn(CompletableFuture.completedFuture(null));
-        when(cacheRepository.store(anyString(), anyString(), anyString(), anyLong()))
+        when(cacheRepository.store(anyString(), any(Object.class), anyLong()))
                 .thenReturn(CompletableFuture.completedFuture(null));
     }
 
     @Test
     @DisplayName("getAnAdvice returns advice successfully")
     void getAnAdvice_ReturnsAdviceSuccessfully() throws ExecutionException, InterruptedException {
-        // Arrange
         String expectedAdvice = "Don't be afraid to ask questions.";
         DomainRequest request = DomainRequest.builder()
                 .question("anything")
@@ -64,10 +57,8 @@ class OurServiceImplTest {
 
         when(adviceAPI.getRandomAdvice()).thenReturn(CompletableFuture.completedFuture(mockAggregate));
 
-        // Act
         CompletableFuture<DomainResponse> result = ourService.getAnAdvice(request);
 
-        // Assert
         assertThat(result.get().getAnswer()).isEqualTo(expectedAdvice);
         verify(adviceAPI).getRandomAdvice();
     }
@@ -75,7 +66,6 @@ class OurServiceImplTest {
     @Test
     @DisplayName("getAnAdvice handles empty advice response")
     void getAnAdvice_HandlesEmptyAdviceResponse() throws ExecutionException, InterruptedException {
-        // Arrange
         DomainRequest request = DomainRequest.builder()
                 .question("test")
                 .build();
@@ -85,17 +75,14 @@ class OurServiceImplTest {
 
         when(adviceAPI.getRandomAdvice()).thenReturn(CompletableFuture.completedFuture(mockAggregate));
 
-        // Act
         CompletableFuture<DomainResponse> result = ourService.getAnAdvice(request);
 
-        // Assert
         assertThat(result.get().getAnswer()).isEmpty();
     }
 
     @Test
     @DisplayName("getAnAdvice propagates error from AdviceApi")
     void getAnAdvice_PropagatesErrorFromAdviceApi() {
-        // Arrange
         DomainRequest request = DomainRequest.builder()
                 .question("test")
                 .build();
@@ -103,7 +90,6 @@ class OurServiceImplTest {
 
         when(adviceAPI.getRandomAdvice()).thenReturn(CompletableFuture.failedFuture(expectedError));
 
-        // Act & Assert
         try {
             ourService.getAnAdvice(request).get();
             throw new AssertionError("Expected ExecutionException");
@@ -115,7 +101,6 @@ class OurServiceImplTest {
     @Test
     @DisplayName("getAnAdvice does not use domain request parameters")
     void getAnAdvice_DoesNotUseDomainRequestParameters() throws ExecutionException, InterruptedException {
-        // Arrange
         DomainRequest request = DomainRequest.builder()
                 .question("this parameter is not used")
                 .build();
@@ -125,10 +110,8 @@ class OurServiceImplTest {
 
         when(adviceAPI.getRandomAdvice()).thenReturn(CompletableFuture.completedFuture(mockAggregate));
 
-        // Act
         CompletableFuture<DomainResponse> result = ourService.getAnAdvice(request);
 
-        // Assert
         assertThat(result.get().getAnswer()).isEqualTo("API provides random advice");
     }
 }

@@ -7,13 +7,12 @@ public interface CacheRepository {
 
     record CacheEntry(
         String cacheKey,
-        String requestParams,
-        String responseData,
+        Object data,
         Instant createdAt,
         Instant expiresAt
     ) {}
 
-    CompletableFuture<Void> store(String cacheKey, String requestParams, String responseData, long ttlSeconds);
+    CompletableFuture<Void> store(String cacheKey, Object data, long ttlSeconds);
 
     CompletableFuture<CacheEntry> retrieve(String cacheKey);
 

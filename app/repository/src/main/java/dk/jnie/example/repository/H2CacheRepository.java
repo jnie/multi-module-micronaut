@@ -12,34 +12,28 @@ import java.util.concurrent.Executors;
 @Singleton
 public class H2CacheRepository implements CacheRepository {
 
-    private final ConcurrentHashMap<String, CacheEntry> cache = new ConcurrentHashMap<>();
+    private final ConcurrentHashMap<String, CacheRepository.CacheEntry> cache = new ConcurrentHashMap<>();
     private final ExecutorService executor = Executors.newCachedThreadPool();
 
     @Override
-    public CompletableFuture<CacheEntry> retrieve(String cacheKey) {
+    public CompletableFuture<CacheRepository.CacheEntry> retrieve(String cacheKey) {
         return CompletableFuture.supplyAsync(() -> {
-            CacheEntry entry = cache.get(cacheKey);
+            CacheRepository.CacheEntry entry = cache.get(cacheKey);
             if (entry != null && entry.expiresAt().isAfter(Instant.now())) {
                 return entry;
             }
             if (entry != null) {
                 cache.remove(cacheKey);
             }
-            return (CacheEntry) null;
+            return (CacheRepository.CacheEntry) null;
         }, executor);
     }
 
     @Override
-    public CompletableFuture<Void> store(String cacheKey, String requestParams, String responseData, long ttlSeconds) {
+    public CompletableFuture<Void> store(String cacheKey, Object data, long ttlSeconds) {
         return CompletableFuture.runAsync(() -> {
             Instant now = Instant.now();
-            CacheEntry entry = new CacheEntry(
-                    cacheKey,
-                    requestParams,
-                    responseData,
-                    now,
-                    now.plusSeconds(ttlSeconds)
-            );
+            CacheRepository.CacheEntry entry = new CacheRepository.CacheEntry(cacheKey, data, now, now.plusSeconds(ttlSeconds));
             cache.put(cacheKey, entry);
         }, executor);
     }
@@ -55,7 +49,7 @@ public class H2CacheRepository implements CacheRepository {
             Instant now = Instant.now();
             int removed = 0;
             for (String key : cache.keySet()) {
-                CacheEntry entry = cache.get(key);
+                CacheRepository.CacheEntry entry = cache.get(key);
                 if (entry != null && entry.expiresAt().isBefore(now)) {
                     cache.remove(key);
                     removed++;

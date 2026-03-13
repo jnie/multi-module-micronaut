@@ -43,6 +43,13 @@ app/
 - service cannot depend on any other module than Domain
 - outboudn/*api* cannot depend on any other module than Domain
 
+## Object mapping for modules
+- domain module is responsible for the domain objects and aggregates
+- outbound/*api* is responsible for mapping from domain model to external contract (API) and back to internal domain model
+- inbound/*api* is responsible for the mapping from API consumers(external parties of application services) to the domain model and back
+- repository is responsible for mapping from domain models to repositories as databases and back to domain models when returning
+- service layer should ONLY handle domain model objects, never do any mapping from or to other external models
+
 ## 🚀 Getting Started
 
 ### Prerequisites
