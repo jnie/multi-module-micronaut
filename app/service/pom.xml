@@ -21,11 +21,23 @@
             <version>${project.parent.version}</version>
             <scope>compile</scope>
         </dependency>
+
+        <dependency>
+            <groupId>${project.parent.groupId}</groupId>
+            <artifactId>repository</artifactId>
+            <version>${project.parent.version}</version>
+        </dependency>
         
         <!-- Micronaut Core -->
         <dependency>
             <groupId>io.micronaut</groupId>
             <artifactId>micronaut-inject</artifactId>
+        </dependency>
+
+        <!-- Jackson for serialization -->
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
         </dependency>
         
         <!-- Test dependencies -->

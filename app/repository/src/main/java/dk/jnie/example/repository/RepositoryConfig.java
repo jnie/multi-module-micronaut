@@ -1,48 +1,35 @@
 package dk.jnie.example.repository;
 
-import com.zaxxer.hikari.HikariConfig;
-import com.zaxxer.hikari.HikariDataSource;
+import dk.jnie.example.domain.repository.CacheRepository;
 import io.micronaut.context.annotation.Bean;
 import io.micronaut.context.annotation.Factory;
-import io.micronaut.context.annotation.Value;
+import io.r2dbc.h2.H2ConnectionConfiguration;
+import io.r2dbc.h2.H2ConnectionFactory;
+import io.r2dbc.spi.ConnectionFactory;
+import jakarta.inject.Singleton;
 import lombok.extern.slf4j.Slf4j;
+import reactor.core.publisher.Mono;
 
-import javax.sql.DataSource;
-
-/**
- * Configuration for the H2 cache database.
- * Sets up an in-memory H2 database with JDBC connectivity.
- */
 @Slf4j
 @Factory
 public class RepositoryConfig {
 
-    /**
-     * Creates and configures the H2 in-memory DataSource.
-     * Database is named 'testdb' and initialized with schema.sql.
-     *
-     * @return Configured H2 DataSource
-     */
     @Bean
-    public DataSource dataSource() {
-        HikariConfig config = new HikariConfig();
-        config.setJdbcUrl("jdbc:h2:mem:testdb;DB_CLOSE_DELAY=-1;MODE=MySQL");
-        config.setUsername("sa");
-        config.setPassword("");
-        config.setDriverClassName("org.h2.Driver");
-        
-        // Pool settings
-        config.setMaximumPoolSize(5);
-        config.setMinimumIdle(2);
-        config.setConnectionTimeout(10000);
-        config.setIdleTimeout(300000);
-        config.setMaxLifetime(600000);
-        
-        // Initialize schema
-        config.setInitializationFailTimeout(0);
-        
-        log.info("Initializing H2 in-memory database for caching");
-        
-        return new HikariDataSource(config);
+    public ConnectionFactory connectionFactory() {
+        log.info("Initializing H2 R2DBC connection factory for caching");
+
+        H2ConnectionConfiguration config = H2ConnectionConfiguration.builder()
+                .inMemory("testdb")
+                .username("sa")
+                .password("")
+                .build();
+
+        return new H2ConnectionFactory(config);
+    }
+
+    @Bean
+    @Singleton
+    public CacheRepository cacheRepository(ConnectionFactory connectionFactory) {
+        return new H2CacheRepository(connectionFactory);
     }
 }

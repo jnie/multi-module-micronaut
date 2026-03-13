@@ -1,9 +1,11 @@
 package dk.jnie.example.services;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import dk.jnie.example.domain.model.DomainRequest;
 import dk.jnie.example.domain.model.DomainResponse;
 import dk.jnie.example.domain.model.MultiAggregate;
 import dk.jnie.example.domain.outbound.AdviceApi;
+import dk.jnie.example.domain.repository.CacheRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -15,6 +17,8 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -23,17 +27,27 @@ import static org.mockito.Mockito.when;
  * Tests the business logic layer that orchestrates calls to the AdviceApi.
  */
 @ExtendWith(MockitoExtension.class)
+@org.mockito.junit.jupiter.MockitoSettings(strictness = org.mockito.quality.Strictness.LENIENT)
 @DisplayName("OurServiceImpl Tests")
 class OurServiceImplTest {
 
     @Mock
     private AdviceApi adviceAPI;
 
+    @Mock
+    private CacheRepository cacheRepository;
+
+    private ObjectMapper objectMapper;
     private OurServiceImpl ourService;
 
     @BeforeEach
     void setUp() {
-        ourService = new OurServiceImpl(adviceAPI);
+        objectMapper = new ObjectMapper();
+        ourService = new OurServiceImpl(adviceAPI, cacheRepository, objectMapper);
+        
+        when(cacheRepository.retrieve(anyString())).thenReturn(CompletableFuture.completedFuture(null));
+        when(cacheRepository.store(anyString(), anyString(), anyString(), anyLong()))
+                .thenReturn(CompletableFuture.completedFuture(null));
     }
 
     @Test
