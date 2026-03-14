@@ -1,6 +1,6 @@
 # Multi-Module Micronaut
 
-![Java](https://img.shields.io/badge/Java-17%2B-blue)
+![Java](https://img.shields.io/badge/Java-21%2B-blue)
 ![Micronaut](https://img.shields.io/badge/Micronaut-4.4.0-green)
 ![Maven](https://img.shields.io/badge/Maven-3.9%2B-purple)
 
@@ -21,6 +21,7 @@ app/
 ├── inbound/rest/          # REST controllers, DTOs, mappers
 ├── application/           # Main class, configuration, beans
 ├── domain/                # Domain models, interfaces (business logic contracts)
+├── repository/            # Caching infrastructure
 ├── service/               # Business logic implementation and Orchestration layer
 └── outbound/              # External adapters (HTTP clients, repositories)
     └── advice-slip-api/   # Integration with Advice Slip API
@@ -34,6 +35,7 @@ app/
 | **application** | Entry point (Application.main), configuration, dependency wiring                |
 | **domain** | Business models, interfaces (contracts) for services, no framework dependencies |
 | **service** | Orchestration and business logic, implements domain services                    |
+| **repository** | Caching implementation, in-memory storage with TTL support                    |
 | **outbound/advice-slip-api** | External API integration (HTTP client)                                          |
 
 ## Constraints for module dependencies
@@ -41,7 +43,8 @@ app/
 - application depends on all modules to wire the full application
 - domain cannot depend on any other module
 - service cannot depend on any other module than Domain
-- outboudn/*api* cannot depend on any other module than Domain
+- repository cannot depend on any other module than Domain
+- outbound/*api* cannot depend on any other module than Domain
 
 ## Object mapping for modules
 - domain module is responsible for the domain objects and aggregates
@@ -54,7 +57,7 @@ app/
 
 ### Prerequisites
 
-- Java 17 or higher
+- Java 21 or higher
 - Maven 3.9+
 
 ### Build
@@ -66,9 +69,12 @@ app/
 ### Run
 
 ```bash
-cd app/application
-./mvnw spring-boot:run  # For Spring Boot version
-java -jar target/application-*.jar  # For Micronaut version (when built)
+./mvnw -pl app/application run
+```
+
+Or run the JAR directly:
+```bash
+java -jar app/application/target/application-*.jar
 ```
 
 ### Test

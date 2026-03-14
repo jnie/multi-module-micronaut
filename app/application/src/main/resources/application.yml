@@ -8,22 +8,6 @@ micronaut:
     name: multi-module-micronaut
   server:
     port: 8080
-  r2dbc:
-    datasources:
-      default:
-        url: r2dbc:h2:mem:///testdb
-        driver: h2
-        schema-generate: CREATE_DROP
-        username: sa
-        password: ''
-
-# OpenAPI / Swagger configuration
-openapi:
-  title: Multi-Module Micronaut API
-  description: API for the multi-module architecture proof-of-concept
-  version: 0.0.1
-  server:
-    url: http://localhost:8080
 
 endpoints:
   health:
