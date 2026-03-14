@@ -8,6 +8,14 @@ micronaut:
     name: multi-module-micronaut
   server:
     port: 8080
+  router:
+    static-resources:
+      swagger:
+        paths: classpath:META-INF/swagger
+        mapping: /swagger/**
+      swagger-ui-res:
+        paths: classpath:META-INF/swagger/views/swagger-ui
+        mapping: /swagger-ui/**
 
 endpoints:
   health:
